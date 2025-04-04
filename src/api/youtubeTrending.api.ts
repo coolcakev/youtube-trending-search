@@ -9,6 +9,6 @@ export const fetchTrandingVideos = async (query: string):Promise<YoutubeTrending
     return response.data;
 };
 
-export const sendTrandingToTelegram = async (videos:YoutubeTrendingVideo[]) => {
-    await axios.post('/api/send-to-telegram', {videos});
+export const sendTrandingToTelegram = async (videos:YoutubeTrendingVideo[],telegramId:string) => {
+    await axios.post('/api/send-to-telegram', {videos,telegramId});
 }

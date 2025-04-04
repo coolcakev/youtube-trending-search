@@ -12,6 +12,7 @@ import Loader from "@/ui/Loader";
 
 export default function Home() {
     const [videos, setVideos] = useState<YoutubeTrendingVideo[]>([]);
+    const [telegramId, setTelegramId] = useState('');
     const {loading, executeWithLoading} = useLoading();
 
     const fetchVideos = async (searchQuery: string) => {
@@ -22,7 +23,9 @@ export default function Home() {
     };
 
     const sendToTelegram = async () => {
-        executeWithLoading(() => handleApiError(() => sendTrandingToTelegram(videos)))
+        if (telegramId.trim() === '') return
+
+        executeWithLoading(() => handleApiError(() => sendTrandingToTelegram(videos, telegramId)))
     }
 
     const debounced = useDebouncedCallback(
@@ -43,17 +46,28 @@ export default function Home() {
     return (
         <div className="w-full flex flex-col items-center">
             <h1 className="text-3xl font-bold mb-4">YouTube Trending Search</h1>
-            <div className="flex justify-between w-[50%] gap-5 items-center">
+            <div className="flex justify-between w-[50%] gap-5 items-center mb-4">
                 <Input
                     type="text"
                     placeholder="Enter a keyword..."
                     onChange={handleKeyWordChange}
                     className="flex-3"
                 />
-                {videos.length > 0 && (<Button onClick={sendToTelegram} >
-                    {"Send to Telegram"}
-                </Button>)}
             </div>
+            {videos.length > 0 &&
+                <div className="flex justify-between w-[50%] gap-5 items-center">
+                    <Input
+                        type="text"
+                        value={telegramId}
+                        placeholder="Enter your telegram id"
+                        onChange={(event) => setTelegramId(event.target.value)}
+                        className="flex-3"
+                    />
+                    <Button onClick={sendToTelegram}>
+                        {"Send to Telegram"}
+                    </Button>
+                </div>}
+
             <div className="p-4 w-[40%] mx-auto">
 
 
