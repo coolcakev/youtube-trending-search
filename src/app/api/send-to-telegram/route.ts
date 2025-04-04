@@ -11,5 +11,7 @@ export async function POST(request: Request) {
             chat_id: process.env.TELEGRAM_CHAT_ID,
             text: message
         });
+
+        return "Videos sent to Telegram successfully!";
     },"Failed to send videos to Telegram");
 }
